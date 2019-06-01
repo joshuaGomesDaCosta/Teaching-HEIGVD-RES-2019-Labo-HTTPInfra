@@ -80,7 +80,9 @@ To prove that the configuration is correct:
 5) run a container with a static server named (to distinguish it easily): docker run -d --name staticres/apache_php
 6) run a few containers with a dynamic server: docker run -d res/express_zoo
 5) run a container with a dynamic server named (to distinguish it easily): docker run -d --name dyn res/apache_php
-7) run a container with a reverse proxy server named or not: docker run -d -p 8080:80 --name reverse_proxy res/reverse_proxy
+)  search ip adress of the named static server : docker inspect static |grep -i ipad
+)  search ip adress of the named dynamic server: docker inspect dyn |grep -i ipad
+7) run a container with a reverse proxy server named or not with 2 environnements variables: docker run -d -p 8080:80 -e STATIC_APP=<ip_static>:80 -e DYNAMIC_APP=<ip_dyn>:3000 --name reverse_proxy res/reverse_proxy
 8) if not done, add "192.168.99.100 Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
 9) check the response sent by the static server with a browser with the server name (labo.res.ch:8080)
 (the navbar link's should change every 2 seconds in large screen) (same as step 4)
