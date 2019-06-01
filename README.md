@@ -22,86 +22,70 @@ The third objective is to practice our usage of **Docker**. All the components o
 
 ## Step 1: Static HTTP server with apache httpd
 
-### Webcasts
+To prove that the configuration is correct:
+1) got to the right branch: git checkout -b fb-apache-static
+2) build a image(from the root of this repo): docker build -t res/apache_php docker-images/apache-php-image/
+3) run a container with port mapping to test out of Docker: docker run -d -p 8080:80 res/apache_php
+4) check the response sent by the server with telnet or a browser with the Docker address (192.168.99.100:8080)
 
-* [Labo HTTP (1): Serveur apache httpd "dockerisé" servant du contenu statique](https://www.youtube.com/watch?v=XFO4OmcfI3U)
-
-### Acceptance criteria
-
-* You have a GitHub repo with everything needed to build the Docker image.
-* You can do a demo, where you build the image, run a container and access content from a browser.
-* You have used a nice looking web template, different from the one shown in the webcast.
-* You are able to explain what you do in the Dockerfile.
-* You are able to show where the apache config files are located (in a running container).
-* You have **documented** your configuration in your report.
-
+  
 ## Step 2: Dynamic HTTP server with express.js
 
-### Webcasts
-
-* [Labo HTTP (2a): Application node "dockerisée"](https://www.youtube.com/watch?v=fSIrZ0Mmpis)
-* [Labo HTTP (2b): Application express "dockerisée"](https://www.youtube.com/watch?v=o4qHbf_vMu0)
-
-### Acceptance criteria
-
-* You have a GitHub repo with everything needed to build the Docker image.
-* You can do a demo, where you build the image, run a container and access content from a browser.
-* You generate dynamic, random content and return a JSON payload to the client.
-* You cannot return the same content as the webcast (you cannot return a list of people).
-* You don't have to use express.js; if you want, you can use another JavaScript web framework or event another language.
-* You have **documented** your configuration in your report.
+To prove that the configuration is correct:
+1) got to the right branch: git checkout -b fb-express-dynamic
+2) build a image(from the root of this repo): docker build -t res/express_zoo docker-images/express_image
+3) run a container with port mapping to test out of Docker: docker run -d -p 8080:3000 res/express_zoo
+4) check many times(to see different results) the response sent by the server with telnet or a browser with the Docker address (192.168.99.100:8080)
 
 
 ## Step 3: Reverse proxy with apache (static configuration)
 
-### Webcasts
-
-* [Labo HTTP (3a): reverse proxy apache httpd dans Docker](https://www.youtube.com/watch?v=WHFlWdcvZtk)
-* [Labo HTTP (3b): reverse proxy apache httpd dans Docker](https://www.youtube.com/watch?v=fkPwHyQUiVs)
-* [Labo HTTP (3c): reverse proxy apache httpd dans Docker](https://www.youtube.com/watch?v=UmiYS_ObJxY)
-
-
-### Acceptance criteria
-
-* You have a GitHub repo with everything needed to build the Docker image for the container.
-* You can do a demo, where you start from an "empty" Docker environment (no container running) and where you start 3 containers: static server, dynamic server and reverse proxy; in the demo, you prove that the routing is done correctly by the reverse proxy.
-* You can explain and prove that the static and dynamic servers cannot be reached directly (reverse proxy is a single entry point in the infra). 
-* You are able to explain why the static configuration is fragile and needs to be improved.
-* You have **documented** your configuration in your report.
+To prove that the configuration is correct:
+1) got to the right branch: git checkout -b fb-reverse-proxy
+2) build a image(from the root of this repo): docker build -t res/reverse_proxy docker-images/apache-reverse-proxy-image
+3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
+4) build a static server's image: docker build -t res/apache_php docker-images/apache-php-image
+5) run a container with a static server: docker run -d res/apache_php
+6) run a container with a dynamic server: docker run -d res/express_zoo
+7) run a container with a reverse proxy server: docker run -d -p 8080:80 res/reverse_proxy
+8) if not done, add "192.168.99.100 Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
+9) check the response sent by the static server with a browser with the server name (labo.res.ch:8080)
+10) check many times(to see different results) the response sent by the server with a browser with the server name (labo.res.ch:8080/api/zoo)
 
 
 ## Step 4: AJAX requests with JQuery
 
-### Webcasts
+To prove that the configuration is correct:
+1) got to the right branch: git checkout -b fb-ajax-jquery
+2) build a image(from the root of this repo): docker build -t res/reverse_proxy docker-images/apache-reverse-proxy-image
+3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
+4) build a static server's image: docker build -t res/apache_php docker-images/apache-php-image
+5) run a container with a static server: docker run -d res/apache_php
+6) run a container with a dynamic server: docker run -d res/express_zoo
+7) run a container with a reverse proxy server: docker run -d -p 8080:80 res/reverse_proxy
+8) if not done, add "192.168.99.100 Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
+9) check the response sent by the static server with a browser with the server name (labo.res.ch:8080)
+(the nav bar links should change every 2 seconds in large screen)
+10) check many times(to see different results) the response sent by the server with a browser with the server name (labo.res.ch:8080/api/zoo)
 
-* [Labo HTTP (4): AJAX avec JQuery](https://www.youtube.com/watch?v=fgpNEbgdm5k)
-
-### Acceptance criteria
-
-* You have a GitHub repo with everything needed to build the various images.
-* You can do a complete, end-to-end demonstration: the web page is dynamically updated every few seconds (with the data coming from the dynamic backend).
-* You are able to prove that AJAX requests are sent by the browser and you can show the content of th responses.
-* You are able to explain why your demo would not work without a reverse proxy (because of a security restriction).
-* You have **documented** your configuration in your report.
 
 ## Step 5: Dynamic reverse proxy configuration
 
-### Webcasts
+To prove that the configuration is correct:
+1) got to the right branch: git checkout -b fb-dyn-conf
+2) build a image(from the root of this repo): docker build -t res/express_zoo docker-images/apache-reverse-proxy-image
+3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
+4) build a static server's image: docker build -t res/express_zoo docker-images/apache-php-image
+5) run a few containers with a static server: docker run -d res/apache_php
+5) run a container with a static server named (to distinguish it easily): docker run -d --name staticres/apache_php
+6) run a few containers with a dynamic server: docker run -d res/express_zoo
+5) run a container with a dynamic server named (to distinguish it easily): docker run -d --name dyn res/apache_php
+7) run a container with a reverse proxy server named or not: docker run -d -p 8080:80 --name reverse_proxy res/reverse_proxy
+8) if not done, add "192.168.99.100 Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
+9) check the response sent by the static server with a browser with the server name (labo.res.ch:8080)
+(the navbar link's should change every 2 seconds in large screen) (same as step 4)
+10) check many times(to see different results) the response sent by the server with a browser with the server name (labo.res.ch:8080/api/zoo) (same as step 3)
 
-* [Labo HTTP (5a): configuration dynamique du reverse proxy](https://www.youtube.com/watch?v=iGl3Y27AewU)
-* [Labo HTTP (5b): configuration dynamique du reverse proxy](https://www.youtube.com/watch?v=lVWLdB3y-4I)
-* [Labo HTTP (5c): configuration dynamique du reverse proxy](https://www.youtube.com/watch?v=MQj-FzD-0mE)
-* [Labo HTTP (5d): configuration dynamique du reverse proxy](https://www.youtube.com/watch?v=B_JpYtxoO_E)
-* [Labo HTTP (5e): configuration dynamique du reverse proxy](https://www.youtube.com/watch?v=dz6GLoGou9k)
-
-### Acceptance criteria
-
-* You have a GitHub repo with everything needed to build the various images.
-* You have found a way to replace the static configuration of the reverse proxy (hard-coded IP adresses) with a dynamic configuration.
-* You may use the approach presented in the webcast (environment variables and PHP script executed when the reverse proxy container is started), or you may use another approach. The requirement is that you should not have to rebuild the reverse proxy Docker image when the IP addresses of the servers change.
-* You are able to do an end-to-end demo with a well-prepared scenario. Make sure that you can demonstrate that everything works fine when the IP addresses change!
-* You are able to explain how you have implemented the solution and walk us through the configuration and the code.
-* You have **documented** your configuration in your report.
 
 ## Additional steps to get extra points on top of the "base" grade
 
