@@ -15,7 +15,7 @@ app.listen(3000, function() {
 function generateZoo() {
 	var animals = [];
 	var nbAnimals = chance.integer({
-		min: 1,
+		min: 4,
 		max: 10
 	});
 
