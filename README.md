@@ -8,6 +8,8 @@ The second objective is to implement a simple, yet complete, **dynamic web appli
 
 The third objective is to practice our usage of **Docker**. All the components of the web infrastructure will be packaged in custom Docker images (we will create at least 3 different images).
 
+## How to try this 
+
 
 ## Step 1: Static HTTP server with apache httpd
 
@@ -17,10 +19,10 @@ The Dockerfile for this container use the image from php:5.6-apache and copy "co
 The folder "content" contains a website page using the framework "W3.css".
 
 ### How To test that the configuration is correct:
-1) use the right branch: git checkout -b fb-apache-static
+1) use the right branch: git checkout fb-apache-static
 2) build a image(from the root of this repo): docker build -t res/apache_php docker-images/apache-php-image/
 3) run a container with port mapping to test out of Docker: docker run -d -p 8080:80 res/apache_php
-4) check the response sent by the server with telnet or a browser with the Docker address (192.168.99.100:8080)
+4) check the response sent by the server with telnet or a browser with your Docker address (192.168.99.100:8080 or localhost:8080)
 
   
 ## Step 2: Dynamic HTTP server with express.js
@@ -31,10 +33,10 @@ The Dockerfile for this container tells to use the image from node:4.4, copy "sr
 The folder "src" contains a javascript script (index.js) and a json file who describe dependencies for a node application. This appliaction need the node_modules folder (not provided on this repo).
 
 ### How To test that the configuration is correct:
-1) use the right branch: git checkout -b fb-express-dynamic
+1) use the right branch: git checkout fb-express-dynamic
 2) build a image(from the root of this repo): docker build -t res/express_zoo docker-images/express_image
 3) run a container with port mapping to test out of Docker: docker run -d -p 8080:3000 res/express_zoo
-4) check many times(to see different results) the response sent by the server with telnet or a browser with the Docker address (192.168.99.100:8080)
+4) check many times(to see different results) the response sent by the server with telnet or a browser with your Docker address.
 
 
 ## Step 3: Reverse proxy with apache (static configuration)
@@ -49,7 +51,7 @@ The folder "conf/sites-available" contains two site configuration:
   with static get request and static adress.
 
 ### How To test that the configuration is correct:
-1) use the right branch: git checkout -b fb-reverse-proxy
+1) use the right branch: git checkout fb-reverse-proxy
 2) build a image(from the root of this repo): docker build -t res/reverse_proxy docker-images/apache-reverse-proxy-image
 3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
 4) build a static server's image: docker build -t res/apache_php docker-images/apache-php-image
@@ -70,14 +72,14 @@ The website on the static server is updated to use a ajax query (use the dynamic
   we include the script in index.html and we modify the nav bar for large screen (adding id to use them in the script).
 
 ### How To test that the configuration is correct:
-1) use the right branch: git checkout -b fb-ajax-jquery
+1) use the right branch: git checkout fb-ajax-jquery
 2) build a image(from the root of this repo): docker build -t res/reverse_proxy docker-images/apache-reverse-proxy-image
 3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
 4) build a static server's image: docker build -t res/apache_php docker-images/apache-php-image
 5) run a container with a static server: docker run -d res/apache_php
 6) run a container with a dynamic server: docker run -d res/express_zoo
 7) run a container with a reverse proxy server: docker run -d -p 8080:80 res/reverse_proxy
-8) if not done, add "192.168.99.100 Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
+8) if not done, add "192.168.99.100 (or localhost) Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
 9) check the response sent by the static server with a browser with the server name (labo.res.ch:8080)
 (the nav bar links should change every 2 seconds in large screen)
 10) check many times(to see different results) the response sent by the server with a browser with the server name (labo.res.ch:8080/api/zoo)
@@ -91,7 +93,7 @@ Now the Dockerfile tells to copy too the file apache2-foreground to "usr/local/b
 the apache2-foreground file is used by the original image to set up the server we want to use our version of this file who set the use of environment variables and run php with the file in "/var/apache2/templates" to generate the "001-reverse-proxy.conf" with the environment variables.
 
 ### How To test that the configuration is correct:
-1) use the right branch: git checkout -b fb-dyn-conf
+1) use the right branch: git checkout fb-dyn-conf
 2) build a image(from the root of this repo): docker build -t res/express_zoo docker-images/apache-reverse-proxy-image
 3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
 4) build a static server's image: docker build -t res/express_zoo docker-images/apache-php-image
@@ -102,7 +104,7 @@ the apache2-foreground file is used by the original image to set up the server w
 6) search ip adress of the named static server : docker inspect static |grep -i ipad
 7) search ip adress of the named dynamic server: docker inspect dyn |grep -i ipad
 7) run a container with a reverse proxy server named or not with 2 environnements variables: docker run -d -p 8080:80 -e STATIC_APP=<ip_static>:80 -e DYNAMIC_APP=<ip_dyn>:3000 --name reverse_proxy res/reverse_proxy
-8) if not done, add "192.168.99.100 Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
+8) if not done, add "192.168.99.100 (or localhost) Labo.res.ch" to your Hosts file (windows C:\WINDOWS\system32\drivers\etc\hosts, linux /etc/hosts)
 9) check the response sent by the static server with a browser with the server name (labo.res.ch:8080)
 (the navbar link's should change every 2 seconds in large screen) (same as step 4)
 10) check many times(to see different results) the response sent by the server with a browser with the server name (labo.res.ch:8080/api/zoo) (same as step 3)
@@ -112,17 +114,26 @@ the apache2-foreground file is used by the original image to set up the server w
 
 ### The configuration used
 
-
 ### How To test that the configuration is correct:
 
 
 ### Step 7: Load balancing, multiple server nodes
 
 ### The configuration used
-
+The path to the configuration is "docker-images/apache-reverse-proxy-image".
+Now the Dockerfile tells the reverse proxy server to add the apache module "proxy_balancer". This will activate the option of load balancing. Some modifications are made in the "001-reverse-proxy.conf" to add the servers to the clusters. We create a cluster for the "static" servers and a cluster for the "dynamic" ones.
 
 ### How To test that the configuration is correct:
+1) use the right branch: git checkout fb-load-balancing
+2) build a image of the reverse proxy server (from the root of this repo): docker build -t res/reverse_proxy docker-images/apache-reverse-proxy-image
+3) build a dynamic server's image: docker build -t res/express_zoo docker-images/express_image
+4) build a static server's image: docker build -t res/apache_php docker-images/apache-php-image
+5) run 3 containers with a static server: docker run -d res/apache_php
+6) run 3 containers with a dynamic server: docker run -d res/express_zoo
+7) run a reverse proxy server: docker run -d -p 8080:80 res/reverse_proxy
 
+For the static and dynamic servers container you need a new command-line interface. This will help to see when the load balancing work. Normally you will see new connections and HTTP requests through all the servers. 
+But for this, you will need to open multiple tabs in your Web Browser (at least 4) at the site labo.res.ch:8080/
 
 
 ### Step 8: Load balancing, round-robin vs sticky sessions
