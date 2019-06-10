@@ -114,7 +114,8 @@ the apache2-foreground file is used by the original image to set up the server w
 Vidéo qui nous a aidé pour trouver la solution :
 
 https://www.youtube.com/watch?v=GNG6PDFxQyQ
-La commande à effectuer tient en une ligne, bien qu'assez complexe :
+
+On peut lancer la commande suivante afin de créer un container qui sert d'interface graphique à d'autres container docker
 
 docker run -it -d —name portainer -v /var/run/docker.sock:/var/run/docker.sock -p 9000:9000 portainer/portainer
 
