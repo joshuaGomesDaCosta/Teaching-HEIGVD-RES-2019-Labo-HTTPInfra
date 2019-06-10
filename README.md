@@ -111,12 +111,10 @@ the apache2-foreground file is used by the original image to set up the server w
 
 
 ### Step 6: Management UI
-Vidéo qui nous a aidé pour trouver la solution :
-
+Video that help us to find a gui interface:
 https://www.youtube.com/watch?v=GNG6PDFxQyQ
 
-On peut lancer la commande suivante afin de créer un container qui sert d'interface graphique à d'autres container docker
-
+We can use portainer with this command
 docker run -it -d —name portainer -v /var/run/docker.sock:/var/run/docker.sock -p 9000:9000 portainer/portainer
 
 
