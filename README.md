@@ -114,7 +114,10 @@ the apache2-foreground file is used by the original image to set up the server w
 Video that help us to find a gui interface:
 https://www.youtube.com/watch?v=GNG6PDFxQyQ
 
-We can use portainer with this command
+We can read the portainer doc, here:
+https://hub.docker.com/r/portainer/portainer/
+
+We can use portainer with this command:
 docker run -it -d —name portainer -v /var/run/docker.sock:/var/run/docker.sock -p 9000:9000 portainer/portainer
 
 
