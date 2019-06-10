@@ -111,10 +111,12 @@ the apache2-foreground file is used by the original image to set up the server w
 
 
 ### Step 6: Management UI
+Vidéo qui nous a aidé pour trouver la solution :
 
-### The configuration used
+https://www.youtube.com/watch?v=GNG6PDFxQyQ
+La commande à effectuer tient en une ligne, bien qu'assez complexe :
 
-### How To test that the configuration is correct:
+docker run -it -d —name portainer -v /var/run/docker.sock:/var/run/docker.sock -p 9000:9000 portainer/portainer
 
 
 ### Step 7: Load balancing, multiple server nodes
